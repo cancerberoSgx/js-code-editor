@@ -1,0 +1,238 @@
+<!doctype html>
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <title>JavaScript Code editor</title>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Sebastián Gurin">
+    <!-- <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png"> -->
+
+    <title>Starter Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <!-- <link href="starter-template.css" rel="stylesheet"> -->
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+.body {margin-top: 32px;}
+    </style>
+    
+    
+  </head>
+
+  <body>
+
+  	    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Project name</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container body">
+
+      <div class="starter-template">
+        <h1>Bootstrap starter template</h1>
+        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+      </div>
+
+
+<section id="droparea">
+  <div dropzone webkitdropzone="copy file:image/png file:image/gif file:image/jpeg" class="centerall">
+    Drop images or a folder of them
+    <div class="arrow left centerall ascolumn">
+      <img src="curved_arrow.png">
+      <span>Drag and drop files/folders from your desktop</span>
+    </div>
+  </div>
+</section>
+
+    </div><!-- /.container -->
+
+    <script type="text/javascript" src="lib/underscore-min.js"></script>
+   	<script type="text/javascript" src="lib/jquery/jquery-2.0.3.min.js"></script> 
+   	<script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script> 
+
+    <script type="text/javascript">
+
+//html5 folder drag and drop manager
+(function () {
+
+  window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+  window.resolveLocalFileSystemURL = window.webkitResolveLocalFileSystemURL ||
+    window.webkitResolveLocalFileSystemURL;
+
+  window.FolderDD = function () {};
+  var proto = window.FolderDD.prototype;
+
+  var bindToEventHandler = function bindToEventHandler(handler) {
+    var boundParameters = Array.prototype.slice.call(arguments);
+    //create closure
+    return function(e) {
+        e = e || window.event; // get window.event if e argument missing (in IE)   
+        boundParameters.unshift(e);
+        handler.apply(this, boundParameters);
+    }
+  };
+
+  proto.error = function (e ) {  
+    console.log('error', e);
+  };
+  proto.error_from_readentries= function(e) {
+    console.log('error_from_readentries', e);
+  }; 
+  proto.traverseFileTree=function (item, path) {
+    path = path || "";
+    var self = this;
+    if (item.isFile) {
+        // Get file
+        item.file(function(file) {
+            console.log("File: " + path + file.name);
+            self.readFileText(file); 
+        }, _.bind(self.error, self));
+    } else if (item.isDirectory) {
+        // Get folder contents
+        var dirReader = item.createReader();
+        dirReader.readEntries(function(entries) {
+            for (var i=0; i<entries.length; i++) {
+                self.traverseFileTree(entries[i], path + item.name + "/")
+            }
+        }, _.bind(self.error_from_readentries, self));
+    }
+  }; 
+
+  proto.readFileText = function(file) {
+    var reader = new FileReader();
+    reader.readAsText(file); 
+    reader.addEventListener('loadend', function(e, file) {
+
+      console.log(this.result); 
+    });
+  }
+  proto.handleDrop = function(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+    var items = evt.dataTransfer.items;
+    for (var i = 0; i < items.length; i++) {
+        var item = items[i].webkitGetAsEntry();
+        if (item) {
+            this.traverseFileTree(item);
+        }
+    }
+  }; 
+
+  proto.handleDragOver = function(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+    evt.dataTransfer.dropEffect = 'copy';
+  }; 
+
+  proto.install = function(el) {    
+    el.addEventListener("drop", _.bind(this.handleDrop, this), false);
+    el.addEventListener("dragover", _.bind(this.handleDragOver, this), false);
+  }; 
+
+})();
+
+
+
+
+
+var dropZone = document.querySelector('[dropzone]');
+var folderDDManager = new FolderDD();
+folderDDManager.install(dropZone); 
+
+
+// window.requestFileSystem = window.requestFileSystem ||
+//                            window.webkitRequestFileSystem;
+// window.resolveLocalFileSystemURL = window.webkitResolveLocalFileSystemURL ||
+//     window.webkitResolveLocalFileSystemURL;
+
+//   
+
+
+// function error(e) {
+//     console.log('error');
+//     console.log(e);
+// }
+
+// function error_from_readentries(e) {
+//     console.log('error_from_readentries');
+//     console.log(e);
+// }
+
+// function traverseFileTree(item, path) {
+//     path = path || "";
+//     if (item.isFile) {
+//         // Get file
+//         item.file(function(file) {
+//             console.log("File: " + path + file.name);
+//         }, error);
+//     } else if (item.isDirectory) {
+//         // Get folder contents
+//         var dirReader = item.createReader();
+//         dirReader.readEntries(function(entries) {
+//             for (var i=0; i<entries.length; i++) {
+//                 traverseFileTree(entries[i], path + item.name + "/")
+//             }
+//         }, error_from_readentries);
+//     }
+// }
+
+// function handleDrop(evt) {
+//     evt.stopPropagation();
+//     evt.preventDefault();
+//     debugger;
+//     var items = evt.dataTransfer.items;
+//     for (var i = 0; i < items.length; i++) {
+//         var item = items[i].webkitGetAsEntry();
+//         if (item) {
+//             traverseFileTree(item);
+//         }
+//     }
+// }
+
+// function handleDragOver(evt) {
+//     evt.stopPropagation();
+//     evt.preventDefault();
+//     evt.dataTransfer.dropEffect = 'copy';
+// }; 
+
+// dropZone.addEventListener("drop", handleDrop, false);
+// dropZone.addEventListener("dragover", handleDragOver, false);
+
+    </script>
+  </body>
+</html>
+

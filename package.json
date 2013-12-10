@@ -1,6 +1,7 @@
 {
-  "name": "js-editors",
+  "name": "js-code-editor",
   "version": "0.1.0",
+  "url": "https://github.com/cancerberoSgx/js-code-editor",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.7.1",

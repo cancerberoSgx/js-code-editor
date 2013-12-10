@@ -1,16 +1,21 @@
+//@author sgurin
 module.exports = function(grunt) {
 
 	//variables about source files: 
 	
 	var jsSrcFiles = [ //don't include template generated files in here.
-	                   			
-			];
+		'client/src/Main.js'
+	,	'client/src/FolderDD.js'
+	];
 	
-	var dependencies = ['sgxjseditors/lib/underscore-min.js', 
-	                    'sgxjseditors/test/jquery/jquery-2.0.3.min.js'
-	                    ]; 
+	var templatesPath = [ 'client/src/ui/template/**/*.html' ]; 
+	// var dependencies = ['sgxjseditors/lib/underscore-min.js', 
+	//                     'sgxjseditors/test/jquery/jquery-2.0.3.min.js'
+	//                     ]; 
 	
-	var templatesJsOutput = 'sgxjseditors/src/html5-templates.js'; 
+	// var templateJsOutput = 'client/src/ui/templates/output.js'; 
+
+	// var jsAllSrcFiles = jsSrcFiles.concat(templateJsOutput);
 	
 
 	// Load Grunt tasks declared in the package.json file
@@ -32,7 +37,7 @@ module.exports = function(grunt) {
 		}
 
 		,
-		clean : [ 'build', templatesJsOutput ]
+		clean : [ 'build', 'client/src/ui/templates/output.js' ]
 
 		,
 		uglify : {
@@ -44,22 +49,12 @@ module.exports = function(grunt) {
 			,
 			main_target : {
 				files : {
-					
-//					'build/<%= pkg.name %>-jseditors.min.js' : [ 
-//                        'sgxjseditors/src/jseditors.js',
-//                        'sgxjseditors/src/jseditors-types.js',
-//                     ],
-//					
-//					'build/<%= pkg.name %>-jseditors-html5.min.js' : [
-//							'sgxjseditors/src/jseditors-html5.js',
-//							'sgxjseditors/src/html5-templates.js' ]			
-//					,
-					'build/<%= pkg.name %>-all.min.js' : jsSrcFiles
+					'client/build/<%= pkg.name %>-all.min.js' : [jsSrcFiles]
+				,	'client/build/templates.min.js': ['client/src/ui/template/output.js']
 				}
 			}
 		}
 		
-		// https://github.com/gruntjs/grunt-contrib-jst			,
 		,
 		jst : {
 			compile : {
@@ -69,25 +64,28 @@ module.exports = function(grunt) {
 								.lastIndexOf('/') + 1, filename
 								.lastIndexOf('.html'));
 					},
-					namespace : 'jseditors.templates'
+					namespace : 'jsCodeEditor.template'
 				},
 				files : {
-					'sgxjseditors/src/html5-templates.js' : [ 'sgxjseditors/src/html5_templates/**/*.html' ]
+					'client/src/ui/template/output.js' : templatesPath //todo how to use variable here ? 
 				}
 			}
 		}
 
 		,
 		yuidoc : {
-			compile : {
-				name : '<%= pkg.name %>',
-				description : '<%= pkg.description %>',
-				version : '<%= pkg.version %>',
-				url : '<%= pkg.homepage %>',
-				options : {
-					paths : 'sgxjseditors/src',
-//							themedir : 'path/to/custom/theme/',//js-editors/node_modules/grunt-contrib-yuidoc/node_modules/yuidocjs/themes/default
-					outdir : 'apidoc'
+			compileClient : {
+				name : '<%= pkg.name %>'
+			,	description : '<%= pkg.description %>'
+			,	version : '<%= pkg.version %>'
+			,	url : '<%= pkg.homepage %>'
+			,	logo: '../logo96.png'
+
+			,	options : {
+					paths : 'client/src'
+//					themedir : 'path/to/custom/theme/',//js-editors/node_modules/grunt-contrib-yuidoc/node_modules/yuidocjs/themes/default
+				,	outdir : 'apidoc'
+   				,	linkNatives: "true"
 				}
 			}
 		}
@@ -95,92 +93,45 @@ module.exports = function(grunt) {
 		// https://github.com/gruntjs/grunt-contrib-connect
 		//run 'grunt run' and a server will be started for easy testing the example (http://localhost:8080/sgxjseditors/test/sgxjseditors.html) or even the apidocs. Thanks to grunt-contrib-watch the templates and apidocs are compiled each time you save a file.  
 		,
-		connect : {
+		connect : { 
 			server : {
 				options : {
 					port : 8080
 				,	base : '.'
-				,	keepalive: true
-				,	open: 'http://localhost:8080/client/index.html'
+				// ,	keepalive: true
+				// ,	open: 'http://localhost:8080/client/index.html'
 				}
 			}
 		}
 
 		,
 		watch : {
-
 			templates : {
-				files : [ 'sgxjseditors/src/html5_templates/**/*.html' ],
+				files : templatesPath,
 				tasks : [ 'jst' ]
 			}
-		
-		,			
+
+		,	
 			apidoc : {
 				files : jsSrcFiles,
 				tasks : [ 'yuidoc' ]
 			}
+		},
 
-
-//				livereload : {
-//					options : {
-//						livereload : true
-//					},
-//					files : [ 'sgxjseditors/src/jseditors-html5.js' ]
-//				}
-
-		// options: {
-		// livereload: true
+		// jasmine : {
+		// 	customTemplate : {
+		// 		src : jsSrcFiles.concat(templatesJsOutput),
+		// 		options : {
+		// 			vendor : dependencies,
+		// 			specs : 'sgxjseditors/spec/*spec.js',
+		// 			keepRunner: true
+		// 		}
+		// 	}
 		// }
-			},
-
-		jasmine : {
-			customTemplate : {
-				src : jsSrcFiles.concat(templatesJsOutput),
-				options : {
-					vendor : dependencies,
-					specs : 'sgxjseditors/spec/*spec.js',
-					keepRunner: true
-				}
-			}
-		}
-		
-		
-			
-			 // grunt-express will serve the files from the folders listed in
-				// bases on specified port and `hostname`
-//			express : {
-//				all : {
-//					options : {
-//						port : 9000,
-//						hostname : '0.0.0.0',
-//						bases : [ '.' ],
-//						livereload : true
-//					}
-//				}
-//			},
-
-							
-			 // grunt-open will open your browser at the project's URL
-//			open : {
-//				all : {
-//					// Gets the port from the connect configuration
-//					path : 'http://localhost:<%= express.all.options.port%>'
-//				}
-//			}
 
 		});
 	
 
-
-//	grunt.loadNpmTasks('grunt-contrib-uglify');
-//	grunt.loadNpmTasks('grunt-contrib-jst');
-//	grunt.loadNpmTasks('grunt-contrib-jshint');
-//	grunt.loadNpmTasks('grunt-contrib-clean');
-//	grunt.loadNpmTasks('grunt-contrib-watch');
-//	grunt.loadNpmTasks('grunt-contrib-yuidoc');
-//	grunt.loadNpmTasks('grunt-contrib-connect');
-
-	
 	
 	/////TASK DEFINITIONS
 	
@@ -190,13 +141,5 @@ module.exports = function(grunt) {
 	
 	grunt.registerTask('test', [ 'jasmine' ]);
 	
-//	grunt.registerTask('server', ['express', 'open', 'watch']);
-//	"matchdep": "~0.1.2",
-//	"grunt-express": "~1.0.0-beta2"  ,
-//	 "grunt-open": "~0.2.1"
-//	grunt.registerTask('test1', ['clean', 'jshint', 'jst', 'uglify', 'watch']);
-
-	
-
 
 };

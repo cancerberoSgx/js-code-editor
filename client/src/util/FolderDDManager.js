@@ -1,8 +1,7 @@
 
 //html5 folder drag and drop manager
-(function () {
 
-  var ns = window.jsCodeEditor; 
+define('FolderDDManager', [], function() {
 
   window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
   window.resolveLocalFileSystemURL = window.webkitResolveLocalFileSystemURL ||
@@ -15,8 +14,8 @@
    * not extract content of binary files. 
    * @class FolderDDManager
    */
-  ns.FolderDDManager = function () {};
-  var proto = ns.FolderDDManager.prototype;
+  var FolderDDManager = function () {};
+  var proto = FolderDDManager.prototype;
 
   proto.error = function (e ) {  
     console.log('error', e);
@@ -37,6 +36,7 @@
         // Get folder contents
         var dirReader = item.createReader();
         dirReader.readEntries(function(entries) {
+          if(entries)
             for (var i=0; i<entries.length; i++) {
                 self.traverseFileTree(entries[i], path + item.name + "/"); 
             }
@@ -67,12 +67,12 @@
     reader.readAsText(file); 
     reader.addEventListener('loadend', function(e, file) {
       var isBinary = self.isBinary(reader.result);
-      if(isBinary) {
-        console.log('BINARYFILE');
-      }
-      else {
-        console.log(this.result); 
-      }
+      // if(isBinary) {
+      //   console.log('BINARYFILE');
+      // }
+      // else {
+      //   console.log(this.result); 
+      // }
     });
   }; 
   proto.handleDrop = function(evt) {
@@ -107,4 +107,5 @@
     el.addEventListener("dragover", _.bind(this.handleDragOver, this), false);
   }; 
 
-})();
+  return FolderDDManager;
+});

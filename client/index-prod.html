@@ -14,11 +14,11 @@
 
     <title>Starter Template for Bootstrap</title>
 
-    <!-- Bootstrap core CSS -->
     <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    <script type="text/javascript" src="lib/require.js"></script>
-    <script type="text/javascript" src="require-config.js"></script>
+    <script type="text/javascript" src="lib/require-min.js"></script>
+
+    <script type="text/javascript" src="build/templates.min.js"></script> 
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -35,7 +35,8 @@
 
   <body>
 
-    <script type="text/javascript" src="src/ui/template/output.js"></script> 
+    <script type="text/javascript" src="build/js-code-editor-optimized.js"></script>
+
     <script type="text/javascript">
     require(['Main'], function(main){
       main();

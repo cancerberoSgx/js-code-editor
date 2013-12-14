@@ -27,3 +27,15 @@ All the application models used by all parts of the app, including persistence, 
 server/services
 server/persistence
 
+Why a server
+
+
+Ideas
+
+this project is experimental and is being made learning some techs at the same time so it has divergent kind of tests and it is full of ideas which I will try to describe in this section. 
+
+At the end, one of the major objectives will be try to implement a Javascript IDE like application, in the sense of IDE it will provide many user tools based on js ast parsing like prettify, outline code hierarchy, autocomplete and autodiscover of objects.  In this first implementation, Javascript language tools implementations will have more focus on editor model - extensibility. 
+
+Compared to other more static languages like java, JavaScript is not friendly for designing IDE like tools for helping the language authors. In general, ordering the code in Object oriented ways is a complex problem or even impossible. For example, in JavaScript you compose classes dynamically and there is no a formal-language way of defining this kind of information. For autocomplete and autodiscover class capabilities we need an artificial syntax for doing this for example jsdoc-like. 
+
+Also some OO meta information could be extracting by implementing plugins targetting an individual 3dr party implementation like requirejs, commonjs, amd. 

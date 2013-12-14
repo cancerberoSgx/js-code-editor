@@ -115,7 +115,7 @@ module.exports = function(grunt) {
 			,	description : '<%= pkg.description %>'
 			,	version : '<%= pkg.version %>'
 			,	url : '<%= pkg.homepage %>'
-			,	logo: '../logo96.png'
+			,	logo: '../logo.png'
 
 			,	options : {
 					paths : 'client/src'
@@ -149,7 +149,7 @@ module.exports = function(grunt) {
 
 		,	
 			apidoc : {
-				files : jsSrcFiles,
+				files : 'client/src/**/*.js',
 				tasks : [ 'yuidoc' ]
 			}
 		},

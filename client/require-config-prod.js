@@ -2,10 +2,10 @@
 require.config({
 	baseUrl: ''
 ,	paths: {
-		'jquery': 'lib/jquery/jquery-2.0.3'
-	,	'backbone': 'lib/backbone'
-	,	'underscore': 'lib/underscore'
-	,	'bootstrap': 'lib/bootstrap/js/bootstrap'
+		'jquery': 'lib/jquery/jquery-2.0.3.min'
+	,	'backbone': 'lib/backbone-min'
+	,	'underscore': 'lib/underscore-min'
+	,	'bootstrap': 'lib/bootstrap/js/bootstrap.min'
 
 	,	'Application': 'src/Application'
 	,	'FolderDDManager': 'src/util/FolderDDManager'

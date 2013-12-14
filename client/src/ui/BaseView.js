@@ -9,7 +9,7 @@
  */
 define('BaseView', ['backbone'], function() {	
 	var BaseView = function(){
-		Backbone.View.apply(this, arguments); 		
+		Backbone.View.apply(this, arguments);
 		var self = this;
 		if(arguments.length>0 &&  _(arguments[0]).isObject()) {
 			_(arguments[0]).each(function(val, key){
@@ -50,7 +50,6 @@ define('BaseView', ['backbone'], function() {
 	,	renderDataTemplates: function(){
 			var self = this;
 			this.$el.find('[data-template]').each(function(){
-			debugger;
 				var templateName = jQuery(this).data('template');
 				if(self.application.template[templateName]) {
 					self.renderTemplate(templateName, self, jQuery(this)); 

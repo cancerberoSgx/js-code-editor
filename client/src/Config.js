@@ -1,5 +1,5 @@
 (function () {
-  	var ns = window.jsCodeEditor; 
+	var ns = window.jsCodeEditor; 
 	var defaultConfig = {
 		file: {
 			extensionsToRead: ['js']

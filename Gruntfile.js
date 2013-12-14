@@ -3,34 +3,17 @@ module.exports = function(grunt) {
 
 	//variables about source files: 
 	
-	var jsSrcFiles = [ //don't include template generated files in here.
-		// 'client/src/require-config.js'
-		'client/src/Main.js'
-	,	'client/src/util/FolderDD.js'
-	,	'client/src/Application.js'
-	// ,	'client/src/Config.js'
-	];
+	var jsSrcFiles = 'client/src/**/*.js'; 
 	
-	// var jsLibFiles = [
-	// 	'client/lib/underscore-min.js'
-	// ,	'client/lib/require-min.js'
-	// ,	'client/lib/backbone-min.js'
-	// ,	'client/lib/jquery/jquery-2.0.3.min.js'
-	// ,	'client/lib/bootstrap/js/bootstrap-min.js'
-	// ]; 
-
 	var templatesPath = [ 'client/src/ui/template/**/*.html' ]; 
-	// var dependencies = ['sgxjseditors/lib/underscore-min.js', 
-	//                     'sgxjseditors/test/jquery/jquery-2.0.3.min.js'
-	//                     ]; 
 	
-	var jsSrcAndTemplates = jsSrcFiles.slice(0); //clone
-	jsSrcAndTemplates.push('client/src/ui/template/output.js');
-	// var templateJsOutput = 'client/src/ui/templates/output.js'; 
-
-	// var jsAllSrcFiles = jsSrcFiles.concat(templateJsOutput);
-	
-
+	var templateOutput = 'client/build/template-output.js'
+	var jstFiles={}; 
+	jstFiles[templateOutput]=templatesPath; 
+	// var jsSrcAndTemplates = jsSrcFiles.slice(0); //clone
+	// var tempaltesOutput = 'client/src/ui/template/output.js'; 
+	// jsSrcAndTemplates.push(tempaltesOutput);
+// var jsSrcAndTemplates = []
 	// Load Grunt tasks declared in the package.json file
 	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
@@ -55,42 +38,15 @@ module.exports = function(grunt) {
 		    options: {
 		    	baseUrl: "client",		    	
 		    	name: 'Main',
-		    	mainConfigFile: "client/require-config.js",
+		    	mainConfigFile: "client/require-config-prod.js",
 		    	out: "client/build/js-code-editor-optimized.js"
 		    }
 		  }
 		}
 
 		,
-		clean : [ 'build', 'client/src/ui/templates/output.js' ]
+		clean : [ 'build']
 
-		,
-		uglify : {
-			options : {
-				banner : '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-			// mangle: false
-			}
-			,
-			templates : {
-				files : {
-					'client/build/templates.min.js': ['client/src/ui/template/output.js']
-				}
-			}
-			// ,
-			// main_target : {
-			// 	files : {
-			// 		'client/build/<%= pkg.name %>-all.min.js' : jsSrcAndTemplates
-			// 	// ,	'client/build/templates.min.js': ['client/src/ui/template/output.js']
-			// 	}
-			// }
-			// ,
-			// libs : {
-			// 	files : {
-			// 		'client/build/libs-all.min.js' : jsLibFiles
-			// 	}
-			// }
-		}
-		
 		,
 		jst : {
 			compile : {
@@ -102,9 +58,7 @@ module.exports = function(grunt) {
 					},
 					namespace : 'jsCodeEditor.template'
 				},
-				files : {
-					'client/src/ui/template/output.js' : templatesPath //todo how to use variable here ? 
-				}
+				files : jstFiles
 			}
 		}
 
@@ -149,7 +103,7 @@ module.exports = function(grunt) {
 
 		,	
 			apidoc : {
-				files : 'client/src/**/*.js',
+				files : jsSrcFiles,
 				tasks : [ 'yuidoc' ]
 			}
 		},
@@ -171,7 +125,7 @@ module.exports = function(grunt) {
 	
 	/////TASK DEFINITIONS
 	
-	grunt.registerTask('default', [ 'clean', 'jshint', 'jst', 'uglify', 'requirejs' ]);
+	grunt.registerTask('default', [ 'clean', 'jshint', 'jst', 'requirejs' ]);
 	grunt.registerTask('run', [ 'connect', 'watch' ]);
 	grunt.registerTask('apidoc', [ 'clean', 'yuidoc' ]);
 	

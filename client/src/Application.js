@@ -1,4 +1,4 @@
-define('Application', ['FolderDDManager', 'LayoutView', 'backbone', 'bootstrap'], 
+define('Application', ['FolderDDManager', 'LayoutView', 'html-templates', 'backbone', 'bootstrap'], 
 	function(FolderDDManager, LayoutView) {
 
 	/**
@@ -7,7 +7,6 @@ define('Application', ['FolderDDManager', 'LayoutView', 'backbone', 'bootstrap']
 	var Application=function(){
 	}; 
 
-	// debugger;
 	var proto = Application.prototype;
 	/**
 	@method start
@@ -23,11 +22,6 @@ define('Application', ['FolderDDManager', 'LayoutView', 'backbone', 'bootstrap']
 		this.layout = new LayoutView({application: this});
 		this.layout.render();
 		jQuery(document.body).empty().append(this.layout.$el);
-
-		// var layoutHtml = this.template.Layout();
-		// var main = jQuery('<div class="main"></div>'); 
-		// jQuery(document.body).append(main); 
-		// document.body.innerHTML=layoutHtml; 
 
 		/**
 		@property folderDDManager {FolderDDManager}

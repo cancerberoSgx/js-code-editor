@@ -13,6 +13,8 @@ require.config({
 
 	,	'BaseView': 'src/ui/BaseView'
 	,	'LayoutView': 'src/ui/LayoutView'
+
+	,	'html-templates': 'build/template-output'
 	}
 ,	shim: {
 		'backbone': {

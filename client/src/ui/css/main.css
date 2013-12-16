@@ -1,3 +1,6 @@
 .body {margin-top: 32px;}
 .row div{border: 3px solid pink;}
 .content{padding: 0 15px;}
+[dropzone]{padding: 4px; border: 2px dotted pink;}
+
+.navigator-view{overflow:scroll;}

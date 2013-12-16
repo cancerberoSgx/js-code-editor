@@ -14,14 +14,18 @@
 
     <title>JavaScript Code Editor</title>
 
-    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
 
     <link href="src/ui/css/main.css" rel="stylesheet">
+
 
     <script type="text/javascript" src="lib/require-min.js"></script>
 
     <script type="text/javascript" src="build/js-code-editor-optimized.js"></script> 
-
+    <!-- 
+    <script type="text/javascript" src="lib/require.js"></script>
+    <script type="text/javascript" src="require-config.js"></script>
+ -->
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -29,9 +33,10 @@
     <![endif]-->
 
     <script>
-    window.userSession={userName: 'sg'}
+    window.userSession={userName: '<%= user.username %>'}
     </script>
-
+    
+    
   </head>
 
   <body>
@@ -40,6 +45,7 @@
     require(['Main'], function(main){
       main();
     }); 
+    alert(window.userSession.userName)
     </script>
 
   </body>

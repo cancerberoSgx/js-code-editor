@@ -20,3 +20,13 @@ __p += '<ul class="nav navbar-nav">\n\t<li class="active"><a href="#">Home</a></
 }
 return __p
 };
+
+this["jsCodeEditor"]["template"]["NavigatorView"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '';
+
+}
+return __p
+};

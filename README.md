@@ -9,28 +9,32 @@ This project will run its UI in the browser and also supports a server side part
 *WARNING: right now this project is just a proof of concept and will probably break your javascript code !*
 * * * * 
 
-= Installation
+# Installation
 
 npm install
 grunt run
 TODO - this is grunt
 
-= File structure
+# File structure
 
-== client
+## client
 
-== model 
+## model 
 All the application models used by all parts of the app, including persistence, UI modeling, services, etc. Backbone models are used for this task. Because it runs both on browsers and serverside nodejs code must be compatible in both. 
 
-== server - optional but recomendable for do real FS writing, store on DB, user sessions and document security. uses mogose, express. Depends on model. 
+##Why Backbone
+The idea is to model all the data with the SAME SINGLE javascript code. This goes both for the client and the server. We choose Backbone 
+
+## server 
+optional but recomendable for do real FS writing, store on DB, user sessions and document security. uses mogose, express. Depends on model. 
 
 server/services
 server/persistence
 
-Why a server
+Why a server?
 
 
-Ideas
+#Ideas
 
 this project is experimental and is being made learning some techs at the same time so it has divergent kind of tests and it is full of ideas which I will try to describe in this section. 
 
